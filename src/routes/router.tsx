@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import Error404 from 'pages/errors/Error404';
 import Home from 'pages/home/Home';
+import Dashboard from 'pages/dashboard/Dashboard';
 import NoAccess from 'pages/noAccess/NoAccess';
 
 import { BaseLayout } from 'layout/index';
@@ -79,13 +80,25 @@ export const routerConfig: RouteConfig[] = [
        ** 首頁
        **/
       {
-        index: true, // 表示當路徑為 '/' 時，這個路由會被使用
+        index: false, // 表示當路徑為 '/' 時，這個路由會被使用
         authCode: '', // 子路由的權限代碼
         path: routerPath.home, // 子路由的路徑
         breadcrumbPath: '', // 頁面路由，用於麵包屑
         element: <Home />,
         pageTitle: '首頁', // 可以添加首頁的標題
         tooltip: <p>首頁喔</p>
+      },
+      /**
+       ** 儀表板
+       **/
+      {
+        index: true,
+        authCode: '',
+        path: routerPath.dashboard,
+        breadcrumbPath: '',
+        element: <Dashboard />,
+        pageTitle: '儀表',
+        tooltip: <p>儀表板</p>
       }
     ]
   },

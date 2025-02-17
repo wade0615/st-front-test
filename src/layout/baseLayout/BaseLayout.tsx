@@ -1,4 +1,6 @@
 import { Outlet } from 'react-router-dom';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 import './BaseLayout.scss';
 
@@ -36,9 +38,42 @@ function BlaseLayoutFooter() {
 
 /** Header */
 function BaseLayoutHeader() {
+  const options = [
+    { label: 'The Godfather', id: 1 },
+    { label: 'Pulp Fiction', id: 2 },
+    { label: 'Inception', id: 3 },
+    { label: 'The Dark Knight', id: 4 },
+    { label: 'Fight Club', id: 5 },
+    { label: 'Forrest Gump', id: 6 },
+    { label: 'The Matrix', id: 7 },
+    { label: 'The Shawshank Redemption', id: 8 },
+    { label: 'The Lord of the Rings', id: 9 },
+    { label: 'Star Wars', id: 10 },
+    { label: 'The Silence of the Lambs', id: 11 },
+    { label: "Schindler's List", id: 12 },
+    { label: 'Se7en', id: 13 },
+    { label: 'The Usual Suspects', id: 14 },
+    { label: 'Saving Private Ryan', id: 15 },
+    { label: 'Gladiator', id: 16 },
+    { label: 'Braveheart', id: 17 },
+    { label: 'The Green Mile', id: 18 },
+    { label: 'Interstellar', id: 19 },
+    { label: 'Django Unchained', id: 20 }
+  ];
   return (
     <header className='base_layout_header'>
-      <h1>Welcome to My App</h1>
+      <Autocomplete
+        disablePortal
+        options={options}
+        sx={{ width: 600 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label=''
+            placeholder='輸入台/美股代號，查看公司價值'
+          />
+        )}
+      />
     </header>
   );
 }

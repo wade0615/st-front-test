@@ -1,10 +1,13 @@
 #base_layout {
   .base_layout_header {
     width: 100%;
-    background-color: #242424;
-    color: #f0f0f0;
+    background-color: #fff;
+    color: #5a5a5a;
     padding: 10px;
     border-bottom: 1px solid #e0e0e0;
+    > div {
+      margin: 0 auto;
+    }
   }
   .base_layout_footer {
     width: 100%;

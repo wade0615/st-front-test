@@ -1,5 +1,6 @@
 const routerPath = {
-  home: '/home'
+  home: '/home',
+  dashboard: '/dashboard'
 };
 
 export default routerPath;
