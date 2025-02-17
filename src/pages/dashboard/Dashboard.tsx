@@ -1,10 +1,22 @@
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { InitState } from 'store/reducers/initReducer';
 import 'pages/dashboard/Dashboard.scss';
 
-function Home() {
+function Dashboard() {
+  const [curTarget, setCurTarget] = useState<string>('');
+  const selectedValue = useSelector(
+    (state: { init: InitState }) => state.init.selectedValue
+  );
+
+  useEffect(() => {
+    setCurTarget(selectedValue || '');
+  }, [selectedValue]);
+
   return (
     <div id='dashboard'>
       <header>
-        <h1>三商壽</h1>
+        <h1>{curTarget ? curTarget : 'No Value Selected'}</h1>
       </header>
       <section>數據圖表</section>
       <section>數據表格</section>
@@ -16,4 +28,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Dashboard;

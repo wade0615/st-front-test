@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { useDispatch } from 'react-redux';
+import { setSelectedValue } from '../../store/reducers/initReducer';
 
 import './BaseLayout.scss';
 
@@ -38,6 +40,7 @@ function BlaseLayoutFooter() {
 
 /** Header */
 function BaseLayoutHeader() {
+  const dispatch = useDispatch();
   const options = [
     { label: 'The Godfather', id: 1 },
     { label: 'Pulp Fiction', id: 2 },
@@ -60,12 +63,21 @@ function BaseLayoutHeader() {
     { label: 'Interstellar', id: 19 },
     { label: 'Django Unchained', id: 20 }
   ];
+
+  const handleChange = (
+    event: React.SyntheticEvent,
+    value: { label: string; id: number } | null
+  ) => {
+    dispatch(setSelectedValue(value ? value.label : null));
+  };
+
   return (
     <header className='base_layout_header'>
       <Autocomplete
         disablePortal
         options={options}
         sx={{ width: 600 }}
+        onChange={handleChange}
         renderInput={(params) => (
           <TextField
             {...params}
