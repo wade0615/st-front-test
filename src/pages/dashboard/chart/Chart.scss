@@ -1,0 +1,105 @@
+.wrapper {
+  overflow: visible;
+  position: relative;
+}
+
+.chart-wrapper {
+  width: 100%;
+  overflow: auto;
+}
+
+.date-data {
+  width: 100%;
+  position: absolute;
+  top: -40px;
+  background: #fff5f1;
+  border-radius: 2px;
+  padding: 12px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+
+  & > div:first-child {
+    padding-left: 4px;
+    flex-grow: 1;
+  }
+  & > div:last-child {
+    padding-right: 4px;
+  }
+  & > div:not(:first-child) {
+    & > span:first-child {
+      font-size: 11px;
+      color: #6d7176;
+    }
+    & > span:nth-child(2) {
+      padding-left: 4px;
+      font-size: 14px;
+      color: #e46609;
+    }
+  }
+}
+
+.chart {
+  overflow-y: hidden;
+  & > svg {
+    height: 100%;
+  }
+
+  & .axisX {
+    font-size: 11px;
+    color: #e2e7e7;
+    stroke-dasharray: 4 6;
+    & text {
+      color: #737b8b;
+      opacity: 0.5;
+    }
+  }
+
+  & .ticksClassName {
+    color: #e2e7e7;
+    stroke-dasharray: 4 6;
+    & text {
+      opacity: 0;
+    }
+  }
+
+  & .label {
+    font-size: 11px;
+    color: #737b8b;
+  }
+
+  & .lineClassName {
+    fill: none;
+    stroke: #f19813;
+    stroke-width: 2px;
+  }
+
+  & .toolTipClassName {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+    background-color: #2a2f34;
+    border-radius: 4px;
+
+    &:after,
+    &:before {
+      border: solid transparent;
+      content: ' ';
+      height: 0;
+      top: 90%;
+      position: absolute;
+      width: 0;
+    }
+
+    &:after {
+      border-width: 15px;
+      border-top-color: #2a2f34;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+}
