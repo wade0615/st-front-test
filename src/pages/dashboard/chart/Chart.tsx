@@ -14,8 +14,8 @@ const tickClassName = 'ticksClassName';
 const lineClassName = 'lineClassName';
 // const toolTipClassName = 'toolTipClassName';
 
-const subGroup = ['yAxis_1', 'yAxis_2'];
-const groupColor = ['#5a6acf', '#e2e7e7'];
+// const subGroup = ['yAxis_1', 'yAxis_2'];
+// const groupColor = ['#5a6acf', '#e2e7e7'];
 
 interface ChartData {
   xAxis: string;
@@ -147,15 +147,15 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           .data(chartData)
           .join('g')
           .attr('transform', (d) => `translate(${x(d.xAxis)}, 0)`)
-          .on('click', handleDateBarClick)
+          // .on('click', handleDateBarClick)
           .selectAll('rect')
-          .data((d) => subGroup.map((key) => ({ key: key, value: d[key] })))
+          .data((d) => [d.yAxis_1])
           .join('rect')
-          .attr('width', xSub.bandwidth())
+          // .attr('width', xSub.bandwidth())
           .attr('height', (d) => chartSize.height - yAxis_1Rate(d))
-          .attr('x', (d) => xSub(d.key))
+          // .attr('x', (d) => x(d.xAxis) ?? 0)
           .attr('y', (d) => yAxis_1Rate(d))
-          .attr('fill', (d) => XsubColor(d.key))
+          .attr('fill', '#e2e7e7')
           .attr('rx', 8);
 
         chart

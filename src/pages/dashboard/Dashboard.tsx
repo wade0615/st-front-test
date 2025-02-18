@@ -25,20 +25,30 @@ function Dashboard() {
           <button>圖表一</button>
           <button>圖表三</button>
         </div>
-        <div className='chart-container'>數據圖表</div>
+        <div className='chart-container'>
+          數據圖表
+          <Chart
+            chartData={[
+              {
+                xAxis: 'string1',
+                yAxis_1: 20,
+                yAxis_2: 300
+              },
+              {
+                xAxis: 'string2',
+                yAxis_1: 50,
+                yAxis_2: 350
+              },
+              {
+                xAxis: 'string3',
+                yAxis_1: 20,
+                yAxis_2: 150
+              }
+            ]}
+          />
+        </div>
       </section>
-      <section>
-        數據表格
-        <Chart
-          chartData={[
-            {
-              xAxis: 'string',
-              yAxis_1: 20,
-              yAxis_2: 300
-            }
-          ]}
-        />
-      </section>
+      <section>數據表格</section>
       <footer>
         <p>圖表單位：千元，數據來自公開資訊官測站</p>
         <p>網頁圖表歡迎轉貼引用，請註明出處為台灣魔法部</p>
