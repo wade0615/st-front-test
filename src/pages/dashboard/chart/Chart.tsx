@@ -35,7 +35,6 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
 
   // 偵測父層寬度，依比例設置圖片 height
   useEffect(() => {
-    console.log('嘗試設置寬高', wrapperRef.current?.offsetWidth);
     const parentWidth = wrapperRef.current?.offsetWidth;
     if (parentWidth) {
       const svgHeight = (3 / 5) * parentWidth;
@@ -67,7 +66,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           height: 300
         };
 
-        const margin = { top: 10, bottom: 40, right: 10, left: 10 };
+        const margin = { top: 10, bottom: 60, right: 30, left: 30 };
 
         const chartSize = {
           width: svgSize.width - margin.left - margin.right,
@@ -110,10 +109,18 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
         chart
           .append('g')
           .call(
-            d3.axisBottom(x).tickSizeOuter(0).tickSizeInner(0).tickPadding(10)
+            d3
+              .axisBottom(x)
+              .tickSizeOuter(0)
+              .tickSizeInner(0)
+              .tickPadding(10)
+              .tickValues(x.domain().filter((d, i) => i % 5 === 0)) // 每 5 個顯示一次標籤
           )
           .attr('transform', `translate(0, ${chartSize.height})`)
-          .classed(axisXClassName, true);
+          .classed(axisXClassName, true)
+          .selectAll('text')
+          .attr('transform', 'rotate(45)')
+          .style('text-anchor', 'start');
 
         const yForLine = d3
           .scaleLinear()
@@ -130,6 +137,15 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           )
           .call((g) => g.select('.domain').remove())
           .classed(tickClassName, true);
+
+        const yAxis_1 = d3.axisLeft(yAxis_1Rate).ticks(5);
+        const yAxis_2 = d3.axisRight(yAxis_2Rate).ticks(5);
+
+        chart.append('g').call(yAxis_1);
+        chart
+          .append('g')
+          .attr('transform', `translate(${chartSize.width}, 0)`)
+          .call(yAxis_2);
 
         chart
           .selectAll('.bar')
