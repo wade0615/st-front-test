@@ -15,6 +15,18 @@ function Dashboard() {
     setCurTarget(selectedValue || '');
   }, [selectedValue]);
 
+  const generateFakeData = () => {
+    const data = [];
+    for (let i = 1; i <= 60; i++) {
+      data.push({
+        xAxis: `string${i}`,
+        yAxis_1: Math.floor(Math.random() * 100),
+        yAxis_2: Math.floor(Math.random() * 500)
+      });
+    }
+    return data;
+  };
+
   return (
     <div id='dashboard'>
       <header>
@@ -26,26 +38,8 @@ function Dashboard() {
           <button>圖表三</button>
         </div>
         <div className='chart-container'>
-          數據圖表
-          <Chart
-            chartData={[
-              {
-                xAxis: 'string1',
-                yAxis_1: 20,
-                yAxis_2: 300
-              },
-              {
-                xAxis: 'string2',
-                yAxis_1: 50,
-                yAxis_2: 350
-              },
-              {
-                xAxis: 'string3',
-                yAxis_1: 20,
-                yAxis_2: 150
-              }
-            ]}
-          />
+          <p>數據圖表</p>
+          <Chart chartData={generateFakeData()} />
         </div>
       </section>
       <section>數據表格</section>

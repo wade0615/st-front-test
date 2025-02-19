@@ -35,6 +35,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
 
   // 偵測父層寬度，依比例設置圖片 height
   useEffect(() => {
+    console.log('嘗試設置寬高', wrapperRef.current?.offsetWidth);
     const parentWidth = wrapperRef.current?.offsetWidth;
     if (parentWidth) {
       const svgHeight = (3 / 5) * parentWidth;
@@ -55,6 +56,8 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
 
   useEffect(() => {
     const targetDom = d3Ref.current;
+    if (!targetDom) return;
+
     drawChart();
 
     function drawChart() {
@@ -82,7 +85,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
 
         // 定義的 yAxis_1 的 Y 軸
         const yAxis_1Max =
-          ((d3.max(chartData, (item) => item.yAxis_2) ?? 0) * 4) / 3;
+          ((d3.max(chartData, (item) => item.yAxis_1) ?? 0) * 4) / 3;
         const yAxis_1Rate = d3
           .scaleLinear()
           .range([chartSize.height, 0])
@@ -129,33 +132,15 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           .classed(tickClassName, true);
 
         chart
-          .selectAll('.mainBar')
-          .select('rect')
-          .data(chartData)
-          .join('rect')
-          .attr('x', (d) => x(d.xAxis) ?? 0)
-          .attr('y', () => yForLine(4))
-          .attr('width', x.bandwidth())
-          .attr('height', () => chartSize.height - yForLine(4))
-          .attr('fill-opacity', '0');
-        // .on('click', handleDateBarClick);
-
-        // 加入 bar
-        chart
           .selectAll('.bar')
-          .select('g')
           .data(chartData)
-          .join('g')
-          .attr('transform', (d) => `translate(${x(d.xAxis)}, 0)`)
-          // .on('click', handleDateBarClick)
-          .selectAll('rect')
-          .data((d) => [d.yAxis_1])
-          .join('rect')
-          // .attr('width', xSub.bandwidth())
-          .attr('height', (d) => chartSize.height - yAxis_1Rate(d))
-          // .attr('x', (d) => x(d.xAxis) ?? 0)
-          .attr('y', (d) => yAxis_1Rate(d))
-          .attr('fill', '#e2e7e7')
+          .enter()
+          .append('rect')
+          .attr('x', (d) => x(d.xAxis) ?? 0)
+          .attr('y', (d) => yAxis_1Rate(d.yAxis_1))
+          .attr('width', x.bandwidth())
+          .attr('height', (d) => chartSize.height - yAxis_1Rate(d.yAxis_1))
+          .attr('fill', '#5a6acf')
           .attr('rx', 8);
 
         chart
