@@ -2,6 +2,7 @@
   position: relative;
   min-height: 100dvh;
   .base_layout_header {
+    z-index: 1;
     position: sticky;
     top: 0;
     width: 100%;

@@ -11,7 +11,7 @@
   footer {
     margin: 0 auto;
     padding: 1rem;
-    width: 60dvw;
+    width: 80dvw;
     background-color: #fff;
     color: #5a5a5a;
   }
@@ -42,7 +42,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 40dvh;
+    min-height: 40dvh;
   }
 
   footer {
