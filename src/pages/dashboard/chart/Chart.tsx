@@ -14,9 +14,6 @@ const tickClassName = 'ticksClassName';
 const lineClassName = 'lineClassName';
 // const toolTipClassName = 'toolTipClassName';
 
-// const subGroup = ['yAxis_1', 'yAxis_2'];
-// const groupColor = ['#5a6acf', '#e2e7e7'];
-
 interface ChartData {
   xAxis: string;
   yAxis_1: number;
@@ -36,14 +33,26 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
   // 偵測父層寬度，依比例設置圖片 height
   useEffect(() => {
     const parentWidth = wrapperRef.current?.offsetWidth;
+    const windowHeight = window.innerHeight ?? 0;
+    const maxHeight = windowHeight * 0.8;
     if (parentWidth) {
       const svgHeight = (3 / 5) * parentWidth;
+      if (svgHeight > maxHeight) {
+        setSvgHeight(maxHeight);
+        return;
+      }
       setSvgHeight(svgHeight);
     }
     const handleSetHeight = () => {
       const parentWidth = wrapperRef.current?.offsetWidth;
+      const windowHeight = window.innerHeight ?? 0;
+      const maxHeight = windowHeight * 0.8;
       if (parentWidth) {
         const svgHeight = (3 / 5) * parentWidth;
+        if (svgHeight > maxHeight) {
+          setSvgHeight(maxHeight);
+          return;
+        }
         setSvgHeight(svgHeight);
       }
     };
@@ -66,7 +75,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           height: 300
         };
 
-        const margin = { top: 10, bottom: 60, right: 30, left: 30 };
+        const margin = { top: 10, bottom: 60, right: 60, left: 60 };
 
         const chartSize = {
           width: svgSize.width - margin.left - margin.right,
@@ -157,7 +166,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           .attr('width', x.bandwidth())
           .attr('height', (d) => chartSize.height - yAxis_1Rate(d.yAxis_1))
           .attr('fill', '#5a6acf')
-          .attr('rx', 8);
+          .attr('rx', 2);
 
         chart
           .append('path')
