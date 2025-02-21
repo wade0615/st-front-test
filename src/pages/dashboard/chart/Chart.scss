@@ -43,6 +43,8 @@
 
 .chart {
   overflow-y: hidden;
+  display: flex;
+  justify-content: center;
   & > svg {
     height: 100%;
   }

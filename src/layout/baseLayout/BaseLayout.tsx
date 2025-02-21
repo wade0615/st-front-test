@@ -1,16 +1,18 @@
+import { useEffect, useState, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useDispatch } from 'react-redux';
 import { setSelectedValue } from '../../store/reducers/initReducer';
-
 import './BaseLayout.scss';
 
-// import ExceptionHandleService from 'utils/ExceptionHandler';
-// const _EHS = new ExceptionHandleService({
-//   _NAME: 'layout/Baselayout.tsx',
-//   _NOTICE: ''
-// });
+import api from 'services/api';
+
+import ExceptionHandleService from 'utils/ExceptionHandler';
+const _EHS = new ExceptionHandleService({
+  _NAME: 'layout/Baselayout.tsx',
+  _NOTICE: ''
+});
 
 /* 基本樣式 */
 function BaseLayout() {
@@ -41,28 +43,56 @@ function BlaseLayoutFooter() {
 /** Header */
 function BaseLayoutHeader() {
   const dispatch = useDispatch();
-  const options = [
-    { label: 'The Godfather', id: 1 },
-    { label: 'Pulp Fiction', id: 2 },
-    { label: 'Inception', id: 3 },
-    { label: 'The Dark Knight', id: 4 },
-    { label: 'Fight Club', id: 5 },
-    { label: 'Forrest Gump', id: 6 },
-    { label: 'The Matrix', id: 7 },
-    { label: 'The Shawshank Redemption', id: 8 },
-    { label: 'The Lord of the Rings', id: 9 },
-    { label: 'Star Wars', id: 10 },
-    { label: 'The Silence of the Lambs', id: 11 },
-    { label: "Schindler's List", id: 12 },
-    { label: 'Se7en', id: 13 },
-    { label: 'The Usual Suspects', id: 14 },
-    { label: 'Saving Private Ryan', id: 15 },
-    { label: 'Gladiator', id: 16 },
-    { label: 'Braveheart', id: 17 },
-    { label: 'The Green Mile', id: 18 },
-    { label: 'Interstellar', id: 19 },
-    { label: 'Django Unchained', id: 20 }
-  ];
+
+  const [taiwanStockInfoList, setTaiwanStockInfoList] = useState<
+    {
+      id: number;
+      label: string;
+    }[]
+  >([]);
+
+  /** 取得列表 */
+  const getTaiwanStockInfoList = useCallback(async () => {
+    try {
+      const list = await api.getTaiwanStockInfoList();
+      if (list) {
+        return Array.from(
+          new Map(
+            list.map((item) => [
+              `${item.stock_name}(${item.stock_id})`,
+              {
+                id: parseInt(item.stock_id, 10),
+                label: `${item.stock_name}(${item.stock_id})`
+              }
+            ])
+          ).values()
+        );
+      }
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      _EHS.errorReport(
+        errorMessage,
+        'getTaiwanStockInfoList',
+        _EHS._LEVEL.ERROR
+      );
+    }
+  }, []);
+
+  // 初始化
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const stockList = await getTaiwanStockInfoList();
+        if (stockList) {
+          setTaiwanStockInfoList(stockList);
+        }
+      } catch (error) {
+        const errorMessage = (error as Error).message;
+        _EHS.errorReport(errorMessage, 'init', _EHS._LEVEL.ERROR);
+      }
+    };
+    init();
+  }, [getTaiwanStockInfoList]);
 
   const handleChange = (
     event: React.SyntheticEvent,
@@ -75,7 +105,7 @@ function BaseLayoutHeader() {
     <header className='base_layout_header'>
       <Autocomplete
         disablePortal
-        options={options}
+        options={taiwanStockInfoList}
         sx={{ width: 600 }}
         onChange={handleChange}
         renderInput={(params) => (

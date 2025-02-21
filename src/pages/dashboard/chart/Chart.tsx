@@ -14,9 +14,6 @@ const tickClassName = 'ticksClassName';
 const lineClassName = 'lineClassName';
 // const toolTipClassName = 'toolTipClassName';
 
-// const subGroup = ['yAxis_1', 'yAxis_2'];
-// const groupColor = ['#5a6acf', '#e2e7e7'];
-
 interface ChartData {
   xAxis: string;
   yAxis_1: number;
@@ -32,18 +29,35 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
   const d3Ref = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState(0);
   const [selectDateData, setSelectDateData] = useState<ChartData | null>(null);
+  const [tooltip, setTooltip] = useState<{
+    x: number;
+    y: number;
+    value: number;
+  } | null>(null);
 
   // 偵測父層寬度，依比例設置圖片 height
   useEffect(() => {
     const parentWidth = wrapperRef.current?.offsetWidth;
+    const windowHeight = window.innerHeight ?? 0;
+    const maxHeight = windowHeight * 0.8;
     if (parentWidth) {
       const svgHeight = (3 / 5) * parentWidth;
+      if (svgHeight > maxHeight) {
+        setSvgHeight(maxHeight);
+        return;
+      }
       setSvgHeight(svgHeight);
     }
     const handleSetHeight = () => {
       const parentWidth = wrapperRef.current?.offsetWidth;
+      const windowHeight = window.innerHeight ?? 0;
+      const maxHeight = windowHeight * 0.8;
       if (parentWidth) {
         const svgHeight = (3 / 5) * parentWidth;
+        if (svgHeight > maxHeight) {
+          setSvgHeight(maxHeight);
+          return;
+        }
         setSvgHeight(svgHeight);
       }
     };
@@ -66,7 +80,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           height: 300
         };
 
-        const margin = { top: 10, bottom: 60, right: 30, left: 30 };
+        const margin = { top: 10, bottom: 60, right: 60, left: 80 };
 
         const chartSize = {
           width: svgSize.width - margin.left - margin.right,
@@ -157,7 +171,18 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           .attr('width', x.bandwidth())
           .attr('height', (d) => chartSize.height - yAxis_1Rate(d.yAxis_1))
           .attr('fill', '#5a6acf')
-          .attr('rx', 8);
+          .attr('rx', 2)
+          .on('mouseover', function (event, d) {
+            const wrapperRect = wrapperRef.current?.getBoundingClientRect();
+            if (wrapperRect) {
+              const x = event.clientX - wrapperRect.left;
+              const y = event.clientY - wrapperRect.top - 50;
+              setTooltip({ x, y, value: d.yAxis_1 });
+            }
+          })
+          .on('mouseout', function () {
+            setTooltip(null);
+          });
 
         chart
           .append('path')
@@ -211,6 +236,21 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
       )}
       <div className='chart-wrapper' ref={wrapperRef}>
         <div className='chart' ref={d3Ref} style={{ height: svgHeight }} />
+        {tooltip && (
+          <div
+            className='tooltip'
+            style={{
+              position: 'absolute',
+              left: tooltip.x,
+              top: tooltip.y,
+              backgroundColor: 'white',
+              border: '1px solid black',
+              padding: '5px'
+            }}
+          >
+            {tooltip.value}
+          </div>
+        )}
       </div>
     </div>
   );

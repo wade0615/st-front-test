@@ -1,0 +1,19 @@
+.table-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+
+  &:hover {
+    overflow: auto;
+    white-space: normal;
+  }
+}
+
+.table-cell-negative {
+  color: red;
+}
+
+.table-cell-positive {
+  color: green;
+}
