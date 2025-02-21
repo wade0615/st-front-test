@@ -15,18 +15,18 @@ const apiResponseHandler = async (
     if (type === 'json') {
       const response = await res.json();
       let msg = '';
-      if (res?.ok) {
-        switch (response?.statusCode) {
-          case 1000:
-            return response.result;
+      if (res?.ok || res?.status === 200) {
+        switch (res?.status) {
+          case 200:
+            return response.result || response.data;
           default:
             msg = response?.result?.msg || response.result?.message;
             errorFire(msg, response?.statusCode);
             return null;
         }
       } else if (res?.status === 403) {
-        switch (response?.statusCode) {
-          case 10101: //登入逾時，請重新登入 accessToken & refreshToken 過期
+        switch (response?.status) {
+          case 403: //登入逾時，請重新登入 accessToken & refreshToken 過期
             msg = response?.result?.msg;
             errorFire(msg, response?.statusCode).then(() => {
               // 無權限導至 首頁 or login 頁面

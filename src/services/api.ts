@@ -1,7 +1,7 @@
-import TaiwanStockInfo from 'fakeData/TaiwanStockInfo.json';
-import TaiwanStockMonthRevenue from 'fakeData/TaiwanStockMonthRevenue.json';
+// import TaiwanStockInfo from 'fakeData/TaiwanStockInfo.json';
+// import TaiwanStockMonthRevenue from 'fakeData/TaiwanStockMonthRevenue.json';
 
-// import { get } from './sub_services/base';
+import { get } from './sub_services/base';
 import ExceptionHandleService from 'utils/ExceptionHandler';
 
 const _EHS = new ExceptionHandleService({
@@ -10,8 +10,9 @@ const _EHS = new ExceptionHandleService({
 });
 
 // const baseUrl = 'https://api.finmindtrade.com/api/v4/data';
-// const token =
-//   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiMjAyNS0wMi0yMCAxOTo0MjowNCIsInVzZXJfaWQiOiJ3c3cwNjE1IiwiaXAiOiIyMTkuODUuMzAuMjAzIn0.wPp17AOBz-lfa3B8yYhtmcfOYMYJnk7SVXOPY3CE6sA';
+const baseUrl = 'http://localhost:4000/api/v4/data';
+const token =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiMjAyNS0wMi0yMCAxOTo0MjowNCIsInVzZXJfaWQiOiJ3c3cwNjE1IiwiaXAiOiIyMTkuODUuMzAuMjAzIn0.wPp17AOBz-lfa3B8yYhtmcfOYMYJnk7SVXOPY3CE6sA';
 
 const getTaiwanStockInfoList = async (): Promise<
   {
@@ -23,9 +24,9 @@ const getTaiwanStockInfoList = async (): Promise<
   }[]
 > => {
   try {
-    // const url = `${baseUrl}?dataset=TaiwanStockInfo&token=${token}`;
-    // const result = await get(url);
-    const result = TaiwanStockInfo;
+    const url = `${baseUrl}?dataset=TaiwanStockInfo&token=${token}`;
+    const result = await get(url);
+    // const result = TaiwanStockInfo;
     return result;
   } catch (error) {
     const errorMessage = (error as Error).message;
@@ -34,7 +35,9 @@ const getTaiwanStockInfoList = async (): Promise<
   }
 };
 
-const getTaiwanStockMonthRevenueList = async (): Promise<
+const getTaiwanStockMonthRevenueList = async (
+  stock_id: string
+): Promise<
   {
     date: string;
     stock_id: string;
@@ -45,9 +48,18 @@ const getTaiwanStockMonthRevenueList = async (): Promise<
   }[]
 > => {
   try {
-    // const url = `${baseUrl}?dataset=TaiwanStockInfo&token=${token}&data_id=2330&start_date=2024-01-01&end_date=2025-02-28`;
-    // const result = await get(url);
-    const result = TaiwanStockMonthRevenue;
+    const today = new Date();
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() - 1); // 昨天
+    const startDate = new Date(today);
+    startDate.setFullYear(today.getFullYear() - 6); // 前 6 年
+
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+    const formattedEndDate = endDate.toISOString().split('T')[0];
+
+    const url = `${baseUrl}?dataset=TaiwanStockMonthRevenue&token=${token}&data_id=${stock_id}&start_date=${formattedStartDate}&end_date=${formattedEndDate}`;
+    const result = await get(url);
+    // const result = TaiwanStockMonthRevenue;
     return result;
   } catch (error) {
     const errorMessage = (error as Error).message;
