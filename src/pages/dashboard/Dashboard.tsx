@@ -30,49 +30,66 @@ function Dashboard() {
   );
 
   /** 取得列表 */
-  const getTaiwanStockMonthRevenueList = useCallback(async () => {
-    try {
-      const list = await api.getTaiwanStockMonthRevenueList();
-      if (list) {
-        return list.map((item) => ({
-          xAxis: `${item.revenue_year}${item.revenue_month
-            .toString()
-            .padStart(2, '0')}`,
-          yAxis_1: item.revenue,
-          yAxis_2:
-            item.revenue /
-            parseInt(`${item.revenue_year}${item.revenue_month}`, 10)
-        }));
-      }
-    } catch (error) {
-      const errorMessage = (error as Error).message;
-      _EHS.errorReport(
-        errorMessage,
-        'getTaiwanStockMonthRevenueList',
-        _EHS._LEVEL.ERROR
-      );
-    }
-  }, []);
-
-  // // 初始化
-  useEffect(() => {
-    const init = async () => {
+  const getTaiwanStockMonthRevenueList = useCallback(
+    async (stock_id: string) => {
       try {
-        const stockList = await getTaiwanStockMonthRevenueList();
-        if (stockList) {
-          setTaiwanStockInfoList(stockList);
+        const list = await api.getTaiwanStockMonthRevenueList(stock_id);
+        if (list) {
+          return list.map((item) => ({
+            xAxis: `${item.revenue_year}${item.revenue_month
+              .toString()
+              .padStart(2, '0')}`,
+            yAxis_1: item.revenue,
+            yAxis_2:
+              item.revenue /
+              parseInt(`${item.revenue_year}${item.revenue_month}`, 10)
+          }));
         }
       } catch (error) {
         const errorMessage = (error as Error).message;
-        _EHS.errorReport(errorMessage, 'init', _EHS._LEVEL.ERROR);
+        _EHS.errorReport(
+          errorMessage,
+          'getTaiwanStockMonthRevenueList',
+          _EHS._LEVEL.ERROR
+        );
       }
-    };
-    init();
-  }, [getTaiwanStockMonthRevenueList]);
+    },
+    []
+  );
+
+  // 初始化
+  // useEffect(() => {
+  //   const init = async () => {
+  //     try {
+  //       const stockList = await getTaiwanStockMonthRevenueList();
+  //       if (stockList) {
+  //         setTaiwanStockInfoList(stockList);
+  //       }
+  //     } catch (error) {
+  //       const errorMessage = (error as Error).message;
+  //       _EHS.errorReport(errorMessage, 'init', _EHS._LEVEL.ERROR);
+  //     }
+  //   };
+  //   init();
+  // }, [getTaiwanStockMonthRevenueList]);
 
   useEffect(() => {
-    setCurTarget(selectedValue || '');
-  }, [setCurTarget, selectedValue]);
+    console.log('selectedValue', selectedValue);
+    const fetchData = async () => {
+      if (selectedValue) {
+        const match = selectedValue.match(/\((\d+)\)/);
+        if (match) {
+          setCurTarget(selectedValue || '');
+
+          const stockList = await getTaiwanStockMonthRevenueList(match[1]);
+          if (stockList) {
+            setTaiwanStockInfoList(stockList);
+          }
+        }
+      }
+    };
+    fetchData();
+  }, [setCurTarget, selectedValue, getTaiwanStockMonthRevenueList]);
 
   const generateFakeData = () => {
     const data = [];

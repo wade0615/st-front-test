@@ -17,7 +17,7 @@ const _EHS = new ExceptionHandleService({
  * @param {*} options
  * @param {*} token
  */
-const fetchJson = (url: string, options: RequestInit = {}) => {
+const fetchJson = async (url: string, options: RequestInit = {}) => {
   try {
     const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo) as {
       accessToken?: string;
@@ -41,9 +41,13 @@ const fetchJson = (url: string, options: RequestInit = {}) => {
       requestHeaders.set('Content-Type', 'application/json');
     }
 
-    return fetch(url, { ...options, headers: requestHeaders })
-      .then((response: Response) => {
-        return apiResponseHandler(response, 'json');
+    return await fetch(url, {
+      ...options,
+      headers: requestHeaders
+    })
+      .then(async (response: Response) => {
+        const responseData = await apiResponseHandler(response, 'json');
+        return responseData;
       })
       .catch((err: Error) => {
         errorNotice(`status: ${err.name} | ${err.message}`);
