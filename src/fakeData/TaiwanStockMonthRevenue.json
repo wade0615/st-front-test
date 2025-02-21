@@ -1,0 +1,114 @@
+[
+  {
+    "date": "2024-01-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 176299866000,
+    "revenue_month": 12,
+    "revenue_year": 2023
+  },
+  {
+    "date": "2024-02-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 215785127000,
+    "revenue_month": 1,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-03-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 181648270000,
+    "revenue_month": 2,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-04-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 195210804000,
+    "revenue_month": 3,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-05-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 236021112000,
+    "revenue_month": 4,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-06-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 229620372000,
+    "revenue_month": 5,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-07-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 207868693000,
+    "revenue_month": 6,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-08-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 256953058000,
+    "revenue_month": 7,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-09-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 250866368000,
+    "revenue_month": 8,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-10-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 251872717000,
+    "revenue_month": 9,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-11-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 314239713000,
+    "revenue_month": 10,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2024-12-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 276058358000,
+    "revenue_month": 11,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2025-01-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 278163107000,
+    "revenue_month": 12,
+    "revenue_year": 2024
+  },
+  {
+    "date": "2025-02-01",
+    "stock_id": "2330",
+    "country": "Taiwan",
+    "revenue": 293288038000,
+    "revenue_month": 1,
+    "revenue_year": 2025
+  }
+]
