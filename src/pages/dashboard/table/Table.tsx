@@ -30,7 +30,7 @@ const RevenueTable: React.FC<TableProps> = ({ tableData }) => {
         wrapperRef.current.scrollLeft = tableRef.current.offsetWidth;
       }
     }
-  }, []);
+  }, [tableData]);
 
   return (
     <TableContainer

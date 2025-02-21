@@ -35,7 +35,9 @@ function Dashboard() {
       const list = await api.getTaiwanStockMonthRevenueList();
       if (list) {
         return list.map((item) => ({
-          xAxis: `${item.revenue_year}${item.revenue_month}`,
+          xAxis: `${item.revenue_year}${item.revenue_month
+            .toString()
+            .padStart(2, '0')}`,
           yAxis_1: item.revenue,
           yAxis_2:
             item.revenue /
