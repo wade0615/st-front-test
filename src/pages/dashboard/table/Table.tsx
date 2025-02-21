@@ -36,7 +36,7 @@ const RevenueTable: React.FC<TableProps> = ({ tableData }) => {
     <TableContainer
       ref={wrapperRef}
       component={Paper}
-      sx={{ maxWidth: 800, margin: 'auto', mt: 4 }}
+      sx={{ maxWidth: 1600, margin: 'auto', mt: 4 }}
     >
       <Table ref={tableRef}>
         <TableHead>
@@ -76,7 +76,7 @@ const RevenueTable: React.FC<TableProps> = ({ tableData }) => {
                     : 'table-cell-positive'
                 }`}
               >
-                {row.yAxis_2.toFixed(2)}
+                {(row.yAxis_2 * 100).toFixed(2).toLocaleString()}%
               </TableCell>
             ))}
           </TableRow>

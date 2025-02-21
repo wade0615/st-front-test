@@ -48,7 +48,16 @@ const getTaiwanStockMonthRevenueList = async (
   }[]
 > => {
   try {
-    const url = `${baseUrl}?dataset=TaiwanStockMonthRevenue&token=${token}&data_id=${stock_id}&start_date=2024-01-01&end_date=2025-02-28`;
+    const today = new Date();
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() - 1); // 昨天
+    const startDate = new Date(today);
+    startDate.setFullYear(today.getFullYear() - 6); // 前 6 年
+
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+    const formattedEndDate = endDate.toISOString().split('T')[0];
+
+    const url = `${baseUrl}?dataset=TaiwanStockMonthRevenue&token=${token}&data_id=${stock_id}&start_date=${formattedStartDate}&end_date=${formattedEndDate}`;
     const result = await get(url);
     // const result = TaiwanStockMonthRevenue;
     return result;

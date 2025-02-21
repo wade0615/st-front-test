@@ -28,11 +28,10 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const d3Ref = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState(0);
-  const [selectDateData, setSelectDateData] = useState<ChartData | null>(null);
   const [tooltip, setTooltip] = useState<{
     x: number;
     y: number;
-    value: number;
+    value: string;
   } | null>(null);
 
   // 偵測父層寬度，依比例設置圖片 height
@@ -80,7 +79,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           height: 300
         };
 
-        const margin = { top: 10, bottom: 60, right: 60, left: 80 };
+        const margin = { top: 10, bottom: 60, right: 60, left: 100 };
 
         const chartSize = {
           width: svgSize.width - margin.left - margin.right,
@@ -98,18 +97,20 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
 
         // 定義的 yAxis_1 的 Y 軸
         const yAxis_1Max =
-          ((d3.max(chartData, (item) => item.yAxis_1) ?? 0) * 4) / 3;
+          ((d3.max(chartData, (item) => item.yAxis_1) ?? 0) * 8) / 7;
         const yAxis_1Rate = d3
           .scaleLinear()
           .range([chartSize.height, 0])
           .domain([0, yAxis_1Max ? yAxis_1Max : 1]);
         // 定義的 yAxis_2 的 Y 軸
         const yAxis_2Max =
-          ((d3.max(chartData, (item) => item.yAxis_2) ?? 0) * 4) / 3;
+          ((d3.max(chartData, (item) => item.yAxis_2) ?? 0) * 8) / 7;
+        const yAxis_2Min =
+          ((d3.min(chartData, (item) => item.yAxis_2) ?? 0) * 8) / 7;
         const yAxis_2Rate = d3
           .scaleLinear()
           .range([chartSize.height, 0])
-          .domain([0, yAxis_2Max ? yAxis_2Max : 1]);
+          .domain([yAxis_2Min, yAxis_2Max ? yAxis_2Max : 1]);
 
         const svg = d3
           .select(targetDom)
@@ -128,7 +129,7 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
               .tickSizeOuter(0)
               .tickSizeInner(0)
               .tickPadding(10)
-              .tickValues(x.domain().filter((d, i) => i % 5 === 0)) // 每 5 個顯示一次標籤
+              .tickValues(x.domain().filter((d, i) => i % 12 === 0)) // 每 ? 個顯示一次標籤
           )
           .attr('transform', `translate(0, ${chartSize.height})`)
           .classed(axisXClassName, true)
@@ -152,8 +153,8 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
           .call((g) => g.select('.domain').remove())
           .classed(tickClassName, true);
 
-        const yAxis_1 = d3.axisLeft(yAxis_1Rate).ticks(5);
-        const yAxis_2 = d3.axisRight(yAxis_2Rate).ticks(5);
+        const yAxis_1 = d3.axisLeft(yAxis_1Rate).ticks(10);
+        const yAxis_2 = d3.axisRight(yAxis_2Rate).ticks(8);
 
         chart.append('g').call(yAxis_1);
         chart
@@ -177,7 +178,11 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
             if (wrapperRect) {
               const x = event.clientX - wrapperRect.left;
               const y = event.clientY - wrapperRect.top - 50;
-              setTooltip({ x, y, value: d.yAxis_1 });
+              setTooltip({
+                x,
+                y,
+                value: `${d.xAxis} 的月營收： ${d.yAxis_1.toLocaleString()}`
+              });
             }
           })
           .on('mouseout', function () {
@@ -215,25 +220,11 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
       if (targetDom) {
         targetDom.innerHTML = '';
       }
-      setSelectDateData(null);
     };
   }, [chartData]);
 
   return (
     <div className='wrapper'>
-      {selectDateData && (
-        <div className='date-data'>
-          <div>{selectDateData?.xAxis}</div>
-          <div>
-            <span>yAxis_1</span>
-            <span>{selectDateData?.yAxis_1}</span>
-          </div>
-          <div>
-            <span>yAxis_2</span>
-            <span>{selectDateData?.yAxis_2}</span>
-          </div>
-        </div>
-      )}
       <div className='chart-wrapper' ref={wrapperRef}>
         <div className='chart' ref={d3Ref} style={{ height: svgHeight }} />
         {tooltip && (
