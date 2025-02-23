@@ -27,7 +27,7 @@
 1. 克隆這個倉庫到你的本地環境：
 
    ```bash
-   git clone https://github.com/your-username/st-front-test.git
+   git clone https://github.com/wade0615/st-front-test.git
    ```
 
 2. 進入專案目錄, 安裝依賴：
